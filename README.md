@@ -1,28 +1,23 @@
-# Node.js Server with Nginx Proxy
+# Docker-Nginx-Fastify-Demo
 
-This project sets up a simple Node.js server behind an Nginx reverse proxy using Docker and Docker Compose.
+Проєкт демонструє створення RESTful API за допомогою Fastify, Docker та Nginx. Реалізовано базові CRUD операції для роботи з ресурсом "Books". Проєкт налаштований для роботи в контейнеризованому середовищі з використанням Docker Compose, де Fastify працює як бекенд, а Nginx – як проксі-сервер для керування запитами.
 
-## Project Structure
-- `app.js`: Node.js server
-- `nginx.conf`: Nginx configuration
-- `Dockerfile`: Node.js Docker setup
-- `docker-compose.yml`: Orchestrates the services
-- `static/`: Static files served by Nginx
+## Фунції
 
-## Setup
+**CRUD API для книг:** Створення, отримання, оновлення та видалення інформації про книги через RESTful ендпоінти.
 
-1. Install dependencies:
+- **GET /api/books:** Отримати список всіх книг.
+- **GET /api/books/:** Отримати книгу за ідентифікатором.
+- **POST /api/books:** Створити нову книгу.
+- **PUT /api/books/:** Оновити книгу за ідентифікатором.
+- **DELETE /api/books/:** Видалити книгу за ідентифікатором.
 
-   ```bash
-   npm install
-   ```
+## Встановлення
 
-2. Build and run containers:
+1. Клонувати репозиторій: `git clone https://github.com/your-username/Docker-Nginx-Fastify-Demo.git && cd Docker-Nginx-Fastify-Demo`
 
-   ```bash
-   docker-compose up --build
-   ```
+2. Створити файл `.env` на основі `.env.example` і налаштувати змінні середовища.
 
-3. Access the app:
-   - Static files: `http://localhost`
-   - NodeJS server: `http://localhost/hello`
+3. Запустити Docker Compose: `docker-compose up --build`
+
+Проєкт буде доступний за адресою `http://localhost/`.
