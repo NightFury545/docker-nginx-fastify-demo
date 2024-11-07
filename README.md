@@ -14,7 +14,7 @@
 
 ## Встановлення
 
-1. Клонувати репозиторій: `git clone https://github.com/your-username/Docker-Nginx-Fastify-Demo.git && cd Docker-Nginx-Fastify-Demo`
+1. Клонувати репозиторій: `git clone https://github.com/NightFury545/Docker-Nginx-Fastify-Demo.git && cd Docker-Nginx-Fastify-Demo`
 
 2. Створити файл `.env` на основі `.env.example` і налаштувати змінні середовища.
 
