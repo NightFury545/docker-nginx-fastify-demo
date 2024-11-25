@@ -1,4 +1,5 @@
 const { booksRouter } = require("./books");
+const { ordersRouter } = require("./orders");
 
 module.exports.patchRouting = (fastify) => {
   fastify.setNotFoundHandler((request, reply) => {
@@ -18,4 +19,5 @@ module.exports.patchRouting = (fastify) => {
   });
 
   fastify.register(booksRouter);
+  fastify.register(ordersRouter);
 };

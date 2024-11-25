@@ -7,6 +7,37 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    environment:
+      - APP_HOST=0.0.0.0
+      - APP_PORT=3000
+      - REBUILD_PRISMA_CLIENT=true
+      - APP_PG_DATABASE_URL=postgresql://postgres:qwerty123@postgres:5432/book_store?schema=public
+      - APP_MONGO_DATABASE_URL=mongodb://mongo:qwerty123@mongo:27017/bookStore?authSource=admin
+    depends_on:
+      - postgres
+      - mongo
+    networks:
+      - app-network
+
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=book_store
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=qwerty123
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=bookStore
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=qwerty123
     networks:
       - app-network
 

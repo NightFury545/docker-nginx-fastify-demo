@@ -1,60 +1,53 @@
-const { randomUUID } = require("node:crypto");
+const { postgresAdapter: { $prisma }, } = require("./../adapters/postgres");
 
 class BookRepository {
-    constructor() {
-        this.storage = new Map();
+
+  #prisma;
+
+  constructor() {
+    this.#prisma = $prisma;
+  }
+
+  async create(data) {
+    return await this.#prisma.book.create({
+      data,
+    });
+  }
+
+  async findByPK(id) {
+    const book = await this.#prisma.book.findUnique({
+      where: { id },
+    });
+
+    if (!book) {
+      throw new Error("Book not found");
     }
 
-    async create(data) {
-        const id = randomUUID();
+    return book;
+  }
 
-        const syncedTimestamp = Date.now();
+  async find({ term, limit, offset, sort }) {
+    const books = await this.#prisma.book.findMany({
+      where: term ? { name: { contains: term } } : {},
+      skip: offset,
+      take: limit,
+      orderBy: { [sort]: "desc" },
+    });
 
-        this.storage.set(id, {
-            id,
-            ...data,
-            createdAt: syncedTimestamp,
-            updatedAt: syncedTimestamp,
-        });
+    return books;
+  }
 
-        return this.storage.get(id);
-    }
+  async update(id, data) {
+    return await this.#prisma.book.update({
+      where: { id },
+      data,
+    });
+  }
 
-    async read(id) {
-        if (id && !this.storage.has(id)) {
-            throw new Error("Book not found");
-        }
-
-        return id ? this.storage.get(id) : Array.from(this.storage.values());
-    }
-
-    async update(id, data) {
-        if (!this.storage.has(id)) {
-            throw new Error("Book not found");
-        }
-
-        delete data.id;
-
-        this.storage.set(id, {
-            ...this.storage.get(id),
-            ...data,
-            updatedAt: Date.now(),
-        });
-
-        return this.storage.get(id);
-    }
-
-    async delete(id) {
-        if (!this.storage.has(id)) {
-            throw new Error("Book not found");
-        }
-
-        const book = this.storage.get(id);
-
-        this.storage.delete(id);
-
-        return book;
-    }
+  async delete(id) {
+    return await this.#prisma.book.delete({
+      where: { id },
+    });
+  }
 }
-
 module.exports.bookRepository = new BookRepository();

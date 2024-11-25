@@ -1,9 +1,9 @@
-const { bookRepository } = require("./../../repositories/book.repo");
+const { orderRepository } = require("./../../repositories/order.repo");
 
 module.exports = {
-  getBook: {
-    url: "/books/:id",
-    method: "GET",
+  deleteOrder: {
+    url: "/orders/:id",
+    method: "DELETE",
     schema: {
       params: {
         type: "object",
@@ -16,11 +16,12 @@ module.exports = {
     handler: async (request, reply) => {
       try {
         const targetId = request.params.id;
-        const book = await bookRepository.findByPK(targetId);
-        return reply.code(200).send(book);
+        await orderRepository.delete(targetId);
+
+        return reply.code(200).send({ message: "Order deleted successfully" });
       } catch (error) {
         request.log.error(error);
-        return reply.code(404).send({ error: "Book not found" });
+        return reply.code(500).send({ error: "Failed to delete order" });
       }
     },
   },
