@@ -2,14 +2,13 @@ const { PORT, HOST } = require("./config");
 
 const { bootstrapFastify } = require("./app");
 
-const { mongoDBAdapter } = require("./adapters/mongodb");
-const { postgresAdapter } = require("./adapters/postgres");
+const { postgresAdapter } = require("./src/infra/database/postgres");
 
 let fastify;
 
 const startServer = async () => {
   try {
-    await Promise.all([mongoDBAdapter.connect(), postgresAdapter.connect()]);
+    await Promise.all([postgresAdapter.connect()]);
 
     fastify = bootstrapFastify();
 

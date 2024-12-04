@@ -7,13 +7,31 @@ datasource db {
   url      = env("APP_PG_DATABASE_URL")
 }
 
+model User {
+  id          String     @id @default(uuid())
+  username    String
+  library     Library?   @relation("UserLibrary")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Library {
+  id          String     @id @default(uuid())
+  name        String
+  books       Book[]     @relation("Library_Book")
+  user        User       @relation("UserLibrary", fields: [userId], references: [id])
+  userId      String     @unique
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
 model Book {
-  id        String   @id @default(uuid())
-  title     String
-  author    String
-  year      Int
-  genre     String
-  price     Float
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String     @id @default(uuid())
+  title       String
+  author      String
+  year        Int
+  genre       String
+  libraries   Library[]  @relation("Library_Book")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }

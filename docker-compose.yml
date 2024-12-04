@@ -12,10 +12,8 @@ services:
       - APP_PORT=3000
       - REBUILD_PRISMA_CLIENT=true
       - APP_PG_DATABASE_URL=postgresql://postgres:qwerty123@postgres:5432/book_store?schema=public
-      - APP_MONGO_DATABASE_URL=mongodb://mongo:qwerty123@mongo:27017/bookStore?authSource=admin
     depends_on:
       - postgres
-      - mongo
     networks:
       - app-network
 
@@ -30,23 +28,13 @@ services:
     networks:
       - app-network
 
-  mongo:
-    image: mongo:latest
-    ports:
-      - "27017:27017"
-    environment:
-      - MONGO_INITDB_DATABASE=bookStore
-      - MONGO_INITDB_ROOT_USERNAME=mongo
-      - MONGO_INITDB_ROOT_PASSWORD=qwerty123
-    networks:
-      - app-network
-
   nginx:
     image: nginx:alpine
     ports:
       - "80:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/.htpasswd:/etc/nginx/.htpasswd
       - ./static:/usr/share/nginx/html:ro
     depends_on:
       - app

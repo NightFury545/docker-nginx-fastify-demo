@@ -1,7 +1,8 @@
 const Fastify = require("fastify");
 
 const { IS_DEV_ENV } = require("./config");
-const { patchRouting } = require("./routes");
+const { patchRouting } = require("./src/presentation/routes");
+const { patchDocs } = require('./src/presentation/docs');
 
 const bootstrapFastify = () => {
   const fastify = Fastify({
@@ -21,6 +22,8 @@ const bootstrapFastify = () => {
     },
     disableRequestLogging: true,
   });
+
+  patchDocs(fastify);
 
   patchRouting(fastify);
 

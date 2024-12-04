@@ -26,3 +26,5 @@ yarn-error.log*
 *.png
 *.jpg
 *.jpeg
+
+.htpasswd
